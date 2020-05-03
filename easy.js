@@ -164,7 +164,6 @@ Have the function LetterChanges(str) take the str parameter being passed and mod
 Replace every letter in the string with the letter following it in the alphabet (ie. c becomes d, z becomes a). 
 Then capitalize every vowel in this new string (a, e, i, o, u) and finally return this modified string.
 */
-
 function LetterChanges(str) {
     // split to char array and iterate
     // if the char array [i] != (a, e, i, o, u) - replace with char(charcode +1)
@@ -195,20 +194,71 @@ console.log(LetterChanges("abcdefghijkz"));
 
 
 /* QUESTION:
-Have the function LongestWord(sen) take the sen parameter being passed and return the largest word in the string. If there are two or more words that are the same length, return the first word from the string with that length. Ignore punctuation and assume sen will not be empty.
+Have the function LongestWord(sen) take the sen parameter being passed and return the largest word in the string. 
+If there are two or more words that are the same length, return the first word from the string with that length. 
+Ignore punctuation and assume sen will not be empty.
 */
-
-
-/* QUESTION:
-Have the function LongestWord(sen) take the sen parameter being passed and return the largest word in the string. If there are two or more words that are the same length, return the first word from the string with that length. Ignore punctuation and assume sen will not be empty.
-*/
+LongestWord = (sen) => {
+    let words = sen.split(" ");
+    // find the longest word in the array
+    let longestWord = words[0];
+    for (var i = 1; i < words.length; i++) {
+        if (words[i].length > longestWord.length) {
+            longestWord = words[i];
+        }
+    }
+    return longestWord;
+}
+let sentence = "this is the longest work which should be ababagalamaga";
+console.log("\n\nLongest word in the sentence is ")
+console.log(LongestWord(sentence));
 
 
 /*
 QUESTION:
-Have the function QuestionsMarks(str) take the str string parameter, which will contain single digit numbers, letters, and question marks, and check if there are exactly 3 question marks between every pair of two numbers that add up to 10. If so, then your program should return the string true, otherwise it should return the string false. If there aren't any two numbers that add up to 10 in the string, then your program should return false as well.
-For example: if str is "arrb6???4xxbl5???eee5" then your program should return true because there are exactly 3 question marks between 6 and 4, and 3 question marks between 5 and 5 at the end of the string.
+Have the function QuestionsMarks(str) take the str string parameter, which will contain single digit numbers, letters, 
+and question marks, and check if there are exactly 3 question marks between every pair of two numbers that add up to 10. 
+If so, then your program should return the string true, otherwise it should return the string false. 
+If there aren't any two numbers that add up to 10 in the string, then your program should return false as well.
+For example: if str is "arrb6???4xxbl5???eee5" then your program should return true because 
+there are exactly 3 question marks between 6 and 4, and 3 question marks between 5 and 5 at the end of the string.
+
+
+[1-9]\?{3} - arrb|6???|4xxbl|5???|eee5
+
+Better - numbers 0-9 - followed by the questionmark
+
+
 */
+
+//http://design-patterns12.blogspot.com/2018/08/coderbyte-challenge-questions-marks.html
+/*
+The problem seems to come from Coderbyte that isn't able to parse correctly escaped characters in regex 
+patterns (literals or with the RegExp constructor). So the simplest solution is to replace escaped 
+sequences: \d => [0-9], and \? => [?] (as suggested by @Saud in comments).
+*/
+function QuestionsMarks(str) {
+    var state = {
+        d1: 0, d2: 0, marks: 0,
+        init: function () { this.d1 = this.d2; this.marks = 0; },
+        check: function () { return this.d1 + this.d2 > 9 && this.marks != 3; }
+    };
+    var re = /[0-9?]/g;
+    var m;
+
+    while ((m = re.exec(str)) !== null) {
+        if (m[0] == '?') {
+            state.marks++;
+        } else {
+            state.d2 = parseInt(m[0]);
+            if (state.check()) return false;
+            state.init();
+        }
+    }
+    return true;
+}
+
+QuestionMarkds("acc?7??sss?3rr1??????5");
 
 /*
 QUESTION:
