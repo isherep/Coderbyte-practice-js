@@ -6,16 +6,8 @@ function LongestWord(sen) {
     // find the larges value and return it's key
     // cleanup words using Regex
 
-    let wordCounts = {}
-
-    // sen = sen.replace(/[^d]/g, ' ');
-    // console.log(sen)
     let words = sen.match(/\w+/g);
-
-    //console.log(words)
-
     var maxWord = words[0];
-
     for (var i = 0; i < words.length; i++) {
         if (words[i].length > maxWord.length) {
             maxWord = words[i];
@@ -23,7 +15,6 @@ function LongestWord(sen) {
     }
 
     return maxWord;
-
 }
 
   // keep this function call here 
